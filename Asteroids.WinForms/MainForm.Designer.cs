@@ -2,7 +2,7 @@
 
 namespace Asteroids.WinForms
 {
-    partial class FrmAsteroids
+    partial class MainForm
     {
         #region Setup
 

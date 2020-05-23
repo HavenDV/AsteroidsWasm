@@ -11,7 +11,7 @@ using Asteroids.Standard.Interfaces;
 
 namespace Asteroids.WinForms
 {
-    public partial class FrmAsteroids : Form
+    public partial class MainForm : Form
     {
         private Classes.GraphicPictureBox _frame1;
 
@@ -19,7 +19,7 @@ namespace Asteroids.WinForms
         private readonly IDictionary<ActionSound, SoundPlayer> _soundPlayers;
         private SoundPlayer _soundPlaying;
 
-        public FrmAsteroids()
+        public MainForm()
         {
             InitializeComponent();
 

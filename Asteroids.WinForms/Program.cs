@@ -14,7 +14,7 @@ namespace Asteroids.WinForms
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new FrmAsteroids());
+            Application.Run(new MainForm());
         }
     }
 }
