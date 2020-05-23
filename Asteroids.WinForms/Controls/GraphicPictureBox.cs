@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Interfaces;
 
-namespace Asteroids.WinForms.Classes
+namespace Asteroids.WinForms.Controls
 {
     public class GraphicPictureBox : PictureBox, IGraphicContainer
     {

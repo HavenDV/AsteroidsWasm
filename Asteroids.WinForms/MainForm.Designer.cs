@@ -37,7 +37,7 @@ namespace Asteroids.WinForms
         /// </summary>
         private void InitializeComponent()
         {
-            this.PictureBox = new Asteroids.WinForms.Classes.GraphicPictureBox();
+            this.PictureBox = new Asteroids.WinForms.Controls.GraphicPictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -70,6 +70,6 @@ namespace Asteroids.WinForms
 
         #endregion
 
-        private Asteroids.WinForms.Classes.GraphicPictureBox PictureBox;
+        private Asteroids.WinForms.Controls.GraphicPictureBox PictureBox;
     }
 }
