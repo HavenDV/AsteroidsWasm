@@ -13,7 +13,7 @@ namespace Asteroids.Standard.Interfaces
         /// Initialize the container before painting starts.
         /// </summary>
         /// <param name="drawColorMap">Collection (read-only) of <see cref="DrawColor"/> used by the game engine and associated HEX-based (HTML) color strings.</param>
-        Task Initialize(IDictionary<DrawColor, string> drawColorMap);
+        Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap);
 
         /// <summary>
         /// Paint or repaint the canvas with the collections of lines and polygons (unfilled).

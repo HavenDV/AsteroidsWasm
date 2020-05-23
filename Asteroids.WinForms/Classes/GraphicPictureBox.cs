@@ -15,7 +15,7 @@ namespace Asteroids.WinForms.Classes
         private IEnumerable<IGraphicLine> _lastLines = new List<IGraphicLine>();
         private IEnumerable<IGraphicPolygon> _lastPolygons = new List<IGraphicPolygon>();
 
-        public Task Initialize(IDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
         {
             _colorCache = new ReadOnlyDictionary<DrawColor, Pen>(
                 drawColorMap.ToDictionary(
