@@ -13,9 +13,15 @@ namespace Asteroids.WinForms
 {
     public partial class MainForm : Form
     {
+        #region Properties
+
         private IGameController Controller { get; }
         private IDictionary<ActionSound, SoundPlayer> SoundPlayers { get; }
         private SoundPlayer? ActiveSoundPlayer { get; set; }
+
+        #endregion
+
+        #region Constructors
 
         public MainForm()
         {
@@ -37,6 +43,10 @@ namespace Asteroids.WinForms
             }
         }
 
+        #endregion
+
+        #region Event Handlers
+
         private void OnSoundPlayed(object? sender, ActionSound sound)
         {
             if (ActiveSoundPlayer != null)
@@ -54,25 +64,17 @@ namespace Asteroids.WinForms
             });
         }
 
-        private void frmAsteroids_Closed(object sender, EventArgs e)
+        private void MainForm_Resize(object? sender, EventArgs e)
         {
-            Controller.Dispose();
+            Controller.ResizeGame(new Rectangle(0, 0, ClientSize.Width, ClientSize.Height));
         }
 
-        private void frmAsteroids_Resize(object? sender, EventArgs e)
+        private async void MainForm_Load(object? sender, EventArgs e)
         {
-            var rec = new Rectangle(0, 0, ClientSize.Width, ClientSize.Height);
-            Controller.ResizeGame(rec);
+            await Controller.Initialize(PictureBox, new Rectangle(0, 0, ClientSize.Width, ClientSize.Height));
         }
 
-        private async void frmAsteroids_Activated(object? sender, EventArgs e)
-        {
-            Activated -= frmAsteroids_Activated;
-            var rec = new Rectangle(0, 0, ClientSize.Width, ClientSize.Height);
-            await Controller.Initialize(PictureBox, rec);
-        }
-
-        private void frmAsteroids_KeyDown(object? sender, KeyEventArgs e)
+        private void MainForm_KeyDown(object? sender, KeyEventArgs e)
         {
             PlayKey key;
             switch (e.KeyData)
@@ -119,7 +121,7 @@ namespace Asteroids.WinForms
             Controller.KeyDown(key);
         }
 
-        private void frmAsteroids_KeyUp(object? sender, KeyEventArgs e)
+        private void MainForm_KeyUp(object? sender, KeyEventArgs e)
         {
             PlayKey key;
             switch (e.KeyData)
@@ -159,5 +161,6 @@ namespace Asteroids.WinForms
             Controller.KeyUp(key);
         }
 
+        #endregion
     }
 }

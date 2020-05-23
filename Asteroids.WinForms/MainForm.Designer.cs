@@ -58,11 +58,10 @@ namespace Asteroids.WinForms
             this.Controls.Add(this.PictureBox);
             this.Name = "MainForm";
             this.Text = "Asteroids";
-            this.Activated += new System.EventHandler(this.frmAsteroids_Activated);
-            this.Closed += new System.EventHandler(this.frmAsteroids_Closed);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmAsteroids_KeyDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.frmAsteroids_KeyUp);
-            this.Resize += new System.EventHandler(this.frmAsteroids_Resize);
+            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);
+            this.Resize += new System.EventHandler(this.MainForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).EndInit();
             this.ResumeLayout(false);
 

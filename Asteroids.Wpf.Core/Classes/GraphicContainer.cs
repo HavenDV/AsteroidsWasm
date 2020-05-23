@@ -47,7 +47,7 @@ namespace Asteroids.Wpf.Core.Classes
         /// <summary>
         /// Initialize the <see cref="WriteableBitmap"/> with the current width and height.
         /// </summary>
-        public Task Initialize(IDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
         {
             //Cache the colors
             _colorCache = new ReadOnlyDictionary<DrawColor, Color>(
