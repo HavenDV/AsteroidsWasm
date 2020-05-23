@@ -43,6 +43,7 @@ namespace Asteroids.WinForms
             // 
             // PictureBox
             // 
+            this.PictureBox.BackColor = System.Drawing.SystemColors.WindowText;
             this.PictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureBox.Location = new System.Drawing.Point(0, 0);
             this.PictureBox.Name = "PictureBox";
