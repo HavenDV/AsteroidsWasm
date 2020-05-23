@@ -14,9 +14,8 @@ namespace Asteroids.WinForms
     public partial class MainForm : Form
     {
         private IGameController Controller { get; }
-
         private IDictionary<ActionSound, SoundPlayer> SoundPlayers { get; }
-        private SoundPlayer? SoundPlaying { get; set; }
+        private SoundPlayer? ActiveSoundPlayer { get; set; }
 
         public MainForm()
         {
@@ -28,26 +27,30 @@ namespace Asteroids.WinForms
             SoundPlayers = Controller
                 .ActionSounds
                 .ToDictionary(
-                    kvp => kvp.Key
-                    , kvp => new SoundPlayer(kvp.Value)
+                    pair => pair.Key, 
+                    pair => new SoundPlayer(pair.Value)
                 );
 
             foreach (var player in SoundPlayers)
+            {
                 player.Value.Load();
+            }
         }
 
         private void OnSoundPlayed(object? sender, ActionSound sound)
         {
-            if (SoundPlaying != null)
+            if (ActiveSoundPlayer != null)
+            {
                 return;
+            }
 
-            SoundPlaying = SoundPlayers[sound];
+            ActiveSoundPlayer = SoundPlayers[sound];
 
             Task.Factory.StartNew(() =>
             {
-                SoundPlaying.Stream.Position = 0;
-                SoundPlaying.PlaySync();
-                SoundPlaying = null;
+                ActiveSoundPlayer.Stream.Position = 0;
+                ActiveSoundPlayer.PlaySync();
+                ActiveSoundPlayer = null;
             });
         }
 
