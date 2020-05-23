@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFrameworks>net48;netcoreapp31;</TargetFrameworks>
     <UseWindowsForms>true</UseWindowsForms>
     <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
