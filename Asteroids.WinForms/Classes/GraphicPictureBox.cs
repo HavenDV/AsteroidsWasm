@@ -29,7 +29,6 @@ namespace Asteroids.WinForms.Classes
                 pair => new Pen(ColorTranslator.FromHtml(pair.Value))
             );
 
-            Paint += OnPaint;
             return Task.CompletedTask;
         }
 
@@ -43,8 +42,14 @@ namespace Asteroids.WinForms.Classes
 
         }
 
-        private void OnPaint(object sender, PaintEventArgs e)
+        #endregion
+
+        #region Overrides
+
+        protected override void OnPaint(PaintEventArgs e)
         {
+            base.OnPaint(e);
+
             ColorCache = ColorCache ?? throw new InvalidOperationException("ColorCache is null");
 
             foreach (var line in LastLines)
