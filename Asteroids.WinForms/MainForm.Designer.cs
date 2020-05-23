@@ -52,7 +52,7 @@ namespace Asteroids.WinForms
             // 
             // MainForm
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(9, 24);
+            this.AutoScaleBaseSize = new System.Drawing.Size(8, 19);
             this.ClientSize = new System.Drawing.Size(634, 461);
             this.Controls.Add(this.PictureBox);
             this.Name = "MainForm";

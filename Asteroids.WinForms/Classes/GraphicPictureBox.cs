@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +49,10 @@ namespace Asteroids.WinForms.Classes
         {
             base.OnPaint(e);
 
-            ColorCache = ColorCache ?? throw new InvalidOperationException("ColorCache is null");
+            if (ColorCache == null)
+            {
+                return;
+            }
 
             foreach (var line in LastLines)
             {
