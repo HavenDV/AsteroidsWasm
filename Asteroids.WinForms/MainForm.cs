@@ -13,7 +13,6 @@ namespace Asteroids.WinForms
 {
     public partial class MainForm : Form
     {
-        private Classes.GraphicPictureBox? PictureBox { get; set; }
         private IGameController Controller { get; }
 
         private IDictionary<ActionSound, SoundPlayer> SoundPlayers { get; }

@@ -37,26 +37,25 @@ namespace Asteroids.WinForms
         /// </summary>
         private void InitializeComponent()
         {
-            this.PictureBox = new Classes.GraphicPictureBox();
-            ((ISupportInitialize)(this.PictureBox)).BeginInit();
+            this.PictureBox = new Asteroids.WinForms.Classes.GraphicPictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // _frame1
+            // PictureBox
             // 
-            this.PictureBox.BackColor = System.Drawing.SystemColors.WindowText;
             this.PictureBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PictureBox.Location = new System.Drawing.Point(0, 0);
-            this.PictureBox.Name = "_frame1";
+            this.PictureBox.Name = "PictureBox";
             this.PictureBox.Size = new System.Drawing.Size(634, 461);
-            this.PictureBox.TabIndex = 2;
+            this.PictureBox.TabIndex = 0;
             this.PictureBox.TabStop = false;
             // 
-            // FrmAsteroids
+            // MainForm
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(12, 28);
+            this.AutoScaleBaseSize = new System.Drawing.Size(9, 24);
             this.ClientSize = new System.Drawing.Size(634, 461);
             this.Controls.Add(this.PictureBox);
-            this.Name = "FrmAsteroids";
+            this.Name = "MainForm";
             this.Text = "Asteroids";
             this.Activated += new System.EventHandler(this.frmAsteroids_Activated);
             this.Closed += new System.EventHandler(this.frmAsteroids_Closed);
@@ -70,5 +69,6 @@ namespace Asteroids.WinForms
 
         #endregion
 
+        private Asteroids.WinForms.Classes.GraphicPictureBox PictureBox;
     }
 }
