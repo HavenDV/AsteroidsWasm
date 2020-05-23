@@ -13,71 +13,71 @@ namespace Asteroids.WinForms
 {
     public partial class MainForm : Form
     {
-        private Classes.GraphicPictureBox _frame1;
+        private Classes.GraphicPictureBox? PictureBox { get; set; }
+        private IGameController Controller { get; }
 
-        private readonly IGameController _controller;
-        private readonly IDictionary<ActionSound, SoundPlayer> _soundPlayers;
-        private SoundPlayer _soundPlaying;
+        private IDictionary<ActionSound, SoundPlayer> SoundPlayers { get; }
+        private SoundPlayer? SoundPlaying { get; set; }
 
         public MainForm()
         {
             InitializeComponent();
 
-            _controller = new GameController();
-            _controller.SoundPlayed += OnSoundPlayed;
+            Controller = new GameController();
+            Controller.SoundPlayed += OnSoundPlayed;
 
-            _soundPlayers = _controller
+            SoundPlayers = Controller
                 .ActionSounds
                 .ToDictionary(
                     kvp => kvp.Key
                     , kvp => new SoundPlayer(kvp.Value)
                 );
 
-            foreach (var player in _soundPlayers)
+            foreach (var player in SoundPlayers)
                 player.Value.Load();
         }
 
-        private void OnSoundPlayed(object sender, ActionSound sound)
+        private void OnSoundPlayed(object? sender, ActionSound sound)
         {
-            if (_soundPlaying != null)
+            if (SoundPlaying != null)
                 return;
 
-            _soundPlaying = _soundPlayers[sound];
+            SoundPlaying = SoundPlayers[sound];
 
             Task.Factory.StartNew(() =>
             {
-                _soundPlaying.Stream.Position = 0;
-                _soundPlaying.PlaySync();
-                _soundPlaying = null;
+                SoundPlaying.Stream.Position = 0;
+                SoundPlaying.PlaySync();
+                SoundPlaying = null;
             });
         }
 
         private void frmAsteroids_Closed(object sender, EventArgs e)
         {
-            _controller.Dispose();
+            Controller.Dispose();
         }
 
-        private void frmAsteroids_Resize(object sender, EventArgs e)
+        private void frmAsteroids_Resize(object? sender, EventArgs e)
         {
             var rec = new Rectangle(0, 0, ClientSize.Width, ClientSize.Height);
-            _controller.ResizeGame(rec);
+            Controller.ResizeGame(rec);
         }
 
-        private async void frmAsteroids_Activated(object sender, EventArgs e)
+        private async void frmAsteroids_Activated(object? sender, EventArgs e)
         {
             Activated -= frmAsteroids_Activated;
             var rec = new Rectangle(0, 0, ClientSize.Width, ClientSize.Height);
-            await _controller.Initialize(_frame1, rec);
+            await Controller.Initialize(PictureBox, rec);
         }
 
-        private void frmAsteroids_KeyDown(object sender, KeyEventArgs e)
+        private void frmAsteroids_KeyDown(object? sender, KeyEventArgs e)
         {
             PlayKey key;
             switch (e.KeyData)
             {
                 case Keys.Escape:
                     // Escape during a title screen exits the game
-                    if (_controller.GameStatus == GameMode.Title)
+                    if (Controller.GameStatus == GameMode.Title)
                     {
                         Application.Exit();
                         return;
@@ -114,10 +114,10 @@ namespace Asteroids.WinForms
                     return;
             }
 
-            _controller.KeyDown(key);
+            Controller.KeyDown(key);
         }
 
-        private void frmAsteroids_KeyUp(object sender, KeyEventArgs e)
+        private void frmAsteroids_KeyUp(object? sender, KeyEventArgs e)
         {
             PlayKey key;
             switch (e.KeyData)
@@ -154,7 +154,7 @@ namespace Asteroids.WinForms
                     return;
             }
 
-            _controller.KeyUp(key);
+            Controller.KeyUp(key);
         }
 
     }

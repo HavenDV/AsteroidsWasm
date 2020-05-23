@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,17 +11,22 @@ namespace Asteroids.WinForms.Classes
 {
     public class GraphicPictureBox : PictureBox, IGraphicContainer
     {
-        private IDictionary<DrawColor, Pen> _colorCache;
-        private IEnumerable<IGraphicLine> _lastLines = new List<IGraphicLine>();
-        private IEnumerable<IGraphicPolygon> _lastPolygons = new List<IGraphicPolygon>();
+        #region Properties
+
+        // Pen is IDisposable
+        private IReadOnlyDictionary<DrawColor, Pen>? ColorCache { get; set; }
+        private IEnumerable<IGraphicLine> LastLines { get; set; } = new List<IGraphicLine>();
+        private IEnumerable<IGraphicPolygon> LastPolygons { get; set; } = new List<IGraphicPolygon>();
+
+        #endregion
+
+        #region Methods
 
         public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
         {
-            _colorCache = new ReadOnlyDictionary<DrawColor, Pen>(
-                drawColorMap.ToDictionary(
-                    kvp => kvp.Key
-                    , kvp => new Pen(ColorTranslator.FromHtml(kvp.Value))
-                )
+            ColorCache = drawColorMap.ToDictionary(
+                pair => pair.Key, 
+                pair => new Pen(ColorTranslator.FromHtml(pair.Value))
             );
 
             Paint += OnPaint;
@@ -31,19 +36,27 @@ namespace Asteroids.WinForms.Classes
         public Task Draw(IEnumerable<IGraphicLine> lines, IEnumerable<IGraphicPolygon> polygons)
         {
             Invalidate();
-            _lastLines = lines;
-            _lastPolygons = polygons;
+            LastLines = lines;
+            LastPolygons = polygons;
+
             return Task.CompletedTask;
 
         }
 
         private void OnPaint(object sender, PaintEventArgs e)
         {
-            foreach (var line in _lastLines)
-                e.Graphics.DrawLine(_colorCache[line.Color], line.Point1, line.Point2);
+            ColorCache = ColorCache ?? throw new InvalidOperationException("ColorCache is null");
 
-            foreach (var poly in _lastPolygons)
-                e.Graphics.DrawPolygon(_colorCache[poly.Color], poly.Points.ToArray());
+            foreach (var line in LastLines)
+            {
+                e.Graphics.DrawLine(ColorCache[line.Color], line.Point1, line.Point2);
+            }
+            foreach (var poly in LastPolygons)
+            {
+                e.Graphics.DrawPolygon(ColorCache[poly.Color], poly.Points.ToArray());
+            }
         }
+
+        #endregion
     }
 }
