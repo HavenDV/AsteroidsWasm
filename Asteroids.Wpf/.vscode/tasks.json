@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Asteroids.Wpf.Core.csproj"
+                "${workspaceFolder}/Asteroids.Wpf.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
