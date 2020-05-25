@@ -18,7 +18,7 @@ namespace Asteroids.Xamarin.Classes
         private IEnumerable<IGraphicPolygon> _lastPolygons = new List<IGraphicPolygon>();
 
 
-        public Task Initialize(IDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
         {
             _colorCache = new ReadOnlyDictionary<DrawColor, SKColor>(
                 drawColorMap.ToDictionary(
