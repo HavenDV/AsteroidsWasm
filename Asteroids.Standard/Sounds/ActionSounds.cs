@@ -10,9 +10,43 @@ namespace Asteroids.Standard.Sounds
     /// <summary>
     /// Collection of <see cref="ActionSound"/> <see cref="Stream"/>s.
     /// </summary>
-    internal class ActionSounds
+    internal static class ActionSounds
     {
+        #region Constants
+
         private const string SoundDir = "Sounds";
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Collection of <see cref="ActionSound"/> WAV file <see cref="Stream"/>s.
+        /// </summary>
+        public static IDictionary<ActionSound, Stream> SoundDictionary { get; }
+
+        #endregion
+
+        #region Events
+
+        /// <summary>
+        /// Fires when a call is made within the game engine to play a sound.
+        /// </summary>
+        public static event EventHandler<ActionSound> SoundTriggered;
+
+        /// <summary>
+        /// Invokes <see cref="SoundTriggered"/> to play an <see cref="ActionSound"/>.
+        /// </summary>
+        /// <param name="sender">Calling object.</param>
+        /// <param name="sound">Sound to play.</param>
+        public static void OnSoundTriggered(object sender, ActionSound sound)
+        {
+            SoundTriggered?.Invoke(sender, sound);
+        }
+
+        #endregion
+
+        #region Constructors
 
         static ActionSounds()
         {
@@ -34,24 +68,6 @@ namespace Asteroids.Standard.Sounds
             });
         }
 
-        /// <summary>
-        /// Collection of <see cref="ActionSound"/> WAV file <see cref="Stream"/>s.
-        /// </summary>
-        public static IDictionary<ActionSound, Stream> SoundDictionary { get; }
-
-        /// <summary>
-        /// Fires when a call is made within the game engine to play a sound.
-        /// </summary>
-        public static event EventHandler<ActionSound> SoundTriggered;
-
-        /// <summary>
-        /// Invokes <see cref="SoundTriggered"/> to play an <see cref="ActionSound"/>.
-        /// </summary>
-        /// <param name="sender">Calling object.</param>
-        /// <param name="sound">Sound to play.</param>
-        public static void PlaySound(object sender, ActionSound sound)
-        {
-            SoundTriggered?.Invoke(sender, sound);
-        }
+        #endregion
     }
 }

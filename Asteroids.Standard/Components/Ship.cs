@@ -61,9 +61,9 @@ namespace Asteroids.Standard.Components
         /// <returns>Collection of the ships last location polygon.</returns>
         public override IList<Explosion> Explode()
         {
-            PlaySound(this, ActionSound.Explode1);
-            PlaySound(this, ActionSound.Explode2);
-            PlaySound(this, ActionSound.Explode3);
+            OnSoundTriggered(this, ActionSound.Explode1);
+            OnSoundTriggered(this, ActionSound.Explode2);
+            OnSoundTriggered(this, ActionSound.Explode3);
 
             return base.Explode();
         }
@@ -106,7 +106,7 @@ namespace Asteroids.Standard.Components
             if (VelocityY < -maxThrustSpeed)
                 VelocityY = -maxThrustSpeed;
 
-            PlaySound(this, ActionSound.Thrust);
+            OnSoundTriggered(this, ActionSound.Thrust);
         }
 
         /// <summary>

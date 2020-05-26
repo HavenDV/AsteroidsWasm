@@ -97,7 +97,7 @@ namespace Asteroids.Standard.Components
 
             VelocityX = factor * Velocity;
             VelocityY = 0;
-            PlaySound(this, ActionSound.Saucer);
+            OnSoundTriggered(this, ActionSound.Saucer);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace Asteroids.Standard.Components
         /// <returns>Explosion collection to add to.</returns>
         public override IList<Explosion> Explode()
         {
-            PlaySound(this, ActionSound.Explode1);
+            OnSoundTriggered(this, ActionSound.Explode1);
             var explosions = base.Explode();
 
             if (Missile?.IsAlive == true)

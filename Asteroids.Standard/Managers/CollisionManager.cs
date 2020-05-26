@@ -63,7 +63,7 @@ namespace Asteroids.Standard.Managers
                 {
                     case Asteroid.AsteroidSize.Dne:
                         score += 250;
-                        PlaySound(this, ActionSound.Explode3);
+                        OnSoundTriggered(this, ActionSound.Explode3);
 
                         //Destroyed so remove
                         _cache.RemoveAsteroid(i);
@@ -71,12 +71,12 @@ namespace Asteroids.Standard.Managers
 
                     case Asteroid.AsteroidSize.Small:
                         score += 100;
-                        PlaySound(this, ActionSound.Explode2);
+                        OnSoundTriggered(this, ActionSound.Explode2);
                         break;
 
                     case Asteroid.AsteroidSize.Medium:
                         score += 50;
-                        PlaySound(this, ActionSound.Explode1);
+                        OnSoundTriggered(this, ActionSound.Explode1);
                         break;
 
                     case Asteroid.AsteroidSize.Large:

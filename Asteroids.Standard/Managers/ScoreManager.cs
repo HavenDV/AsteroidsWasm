@@ -85,7 +85,7 @@ namespace Asteroids.Standard.Managers
             {
                 _shipsRemaining += 1;
                 _remainderToFreeShip += FreeShipIncrement;
-                PlaySound(this, ActionSound.Life);
+                OnSoundTriggered(this, ActionSound.Life);
 
             }
 

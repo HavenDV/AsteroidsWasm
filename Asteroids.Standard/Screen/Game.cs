@@ -300,7 +300,7 @@ namespace Asteroids.Standard.Screen
                     foreach (var bullet in _cache.GetBulletsAvailable())
                     {
                         bullet.ScreenObject.Shoot(_cache.Ship);
-                        PlaySound(this, ActionSound.Fire);
+                        OnSoundTriggered(this, ActionSound.Fire);
                         return;
                     }
                     break;
@@ -310,7 +310,7 @@ namespace Asteroids.Standard.Screen
                     foreach (var bullet in _cache.GetBulletsAvailable())
                     {
                         bullet.ScreenObject.Shoot(_cache.Ship);
-                        PlaySound(this, ActionSound.Fire);
+                        OnSoundTriggered(this, ActionSound.Fire);
                     }
                     break;
 
