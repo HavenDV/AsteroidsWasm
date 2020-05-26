@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -276,25 +277,45 @@ namespace Asteroids.Standard.Screen
         /// <summary>
         /// Fire a <see cref="Bullet"/> from the <see cref="Ship"/> right if available.
         /// </summary>
-        public void Shoot()
+        public void Shoot(Weapon weapon)
         {
             if (_paused)
-                return;
-
-            if (_cache.Ship.IsAlive)
             {
-                //Fire bullets that are not already moving
-                foreach (var bullet in _cache.GetBulletsAvailable())
-                {
-                    bullet.ScreenObject.Shoot(_cache.Ship);
-                    PlaySound(this, ActionSound.Fire);
-                    return;
-                }
+                return;
             }
-            else if (_cache.ExplosionCount() == 0 && _score.HasReserveShips())
+
+            if (!_cache.Ship.IsAlive &&
+                _cache.ExplosionCount() == 0 && 
+                _score.HasReserveShips())
             {
                 _score.DecrementReserveShips();
                 _cache.UpdateShip(new Ship());
+                return;
+            }
+
+            switch (weapon)
+            {
+                case Weapon.Laser:
+                    //Fire bullets that are not already moving
+                    foreach (var bullet in _cache.GetBulletsAvailable())
+                    {
+                        bullet.ScreenObject.Shoot(_cache.Ship);
+                        PlaySound(this, ActionSound.Fire);
+                        return;
+                    }
+                    break;
+
+                case Weapon.Rocket:
+                    //Fire bullets that are not already moving
+                    foreach (var bullet in _cache.GetBulletsAvailable())
+                    {
+                        bullet.ScreenObject.Shoot(_cache.Ship);
+                        PlaySound(this, ActionSound.Fire);
+                    }
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(weapon), weapon, null);
             }
         }
 

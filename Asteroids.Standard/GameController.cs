@@ -18,6 +18,25 @@ namespace Asteroids.Standard
 
     public class GameController : IDisposable, IGameController
     {
+        #region Properties
+
+        /// <summary>
+        /// Current state of the game.
+        /// </summary>
+        public GameMode GameStatus { get; private set; }
+
+        /// <summary>
+        /// Current weapon.
+        /// </summary>
+        public Weapon CurrentWeapon { get; private set; } = Weapon.Laser;
+
+        /// <summary>
+        /// Collection (read-only) of <see cref="ActionSounds"/> used by the game engine and associated WAV <see cref="Stream"/>s.
+        /// </summary>
+        public IDictionary<ActionSound, Stream> ActionSounds => Sounds.ActionSounds.SoundDictionary;
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -78,20 +97,6 @@ namespace Asteroids.Standard
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Current state of the game.
-        /// </summary>
-        public GameMode GameStatus { get; private set; }
-
-        /// <summary>
-        /// Collection (read-only) of <see cref="ActionSounds"/> used by the game engine and associated WAV <see cref="Stream"/>s.
-        /// </summary>
-        public IDictionary<ActionSound, Stream> ActionSounds => Sounds.ActionSounds.SoundDictionary;
-
-        #endregion
-
         #region Events
 
         /// <summary>
@@ -130,7 +135,9 @@ namespace Asteroids.Standard
         public void KeyDown(PlayKey key)
         {
             if (GameStatus == GameMode.Prep)
+            {
                 return;
+            }
 
             // Check escape key
             if (key == PlayKey.Escape) // Escape
@@ -148,61 +155,66 @@ namespace Asteroids.Standard
                     _currentTitle = new TitleScreen(_textManager, _screenCanvas);
                     GameStatus = GameMode.Title;
                 }
+                return;
             }
-            else // Not Escape
+
+            // If we are in tht Title Screen, Start a game
+            if (GameStatus == GameMode.Title)
             {
-                // If we are in tht Title Screen, Start a game
-                if (GameStatus == GameMode.Title)
-                {
-                    _scoreManager.ResetGame();
-                    _game = new Game(_scoreManager, _textManager, _screenCanvas);
-                    GameStatus = GameMode.Game;
-                    _leftPressed = false;
-                    _rightPressed = false;
-                    _upPressed = false;
-                    _hyperspaceLastPressed = false;
-                    _shootingLastPressed = false;
-                    _pauseLastPressed = false;
-                }
+                _scoreManager.ResetGame();
+                _game = new Game(_scoreManager, _textManager, _screenCanvas);
+                GameStatus = GameMode.Game;
+                _leftPressed = false;
+                _rightPressed = false;
+                _upPressed = false;
+                _hyperspaceLastPressed = false;
+                _shootingLastPressed = false;
+                _pauseLastPressed = false;
+                return;
+            }
+
+            switch (key)
+            {
+                case PlayKey.One:
+                    CurrentWeapon = Weapon.Laser;
+                    break;
+
+                case PlayKey.Two:
+                    CurrentWeapon = Weapon.Rocket;
+                    break;
 
                 // Rotate Left
-                else if (key == PlayKey.Left)
-                {
+                case PlayKey.Left:
                     _leftPressed = true;
-                }
+                    break;
 
                 // Rotate Right
-                else if (key == PlayKey.Right)
-                {
+                case PlayKey.Right:
                     _rightPressed = true;
-                }
+                    break;
 
                 // Thrust
-                else if (key == PlayKey.Up)
-                {
+                case PlayKey.Up:
                     _upPressed = true;
-                }
+                    break;
 
                 // Hyperspace (can't be held down)
-                else if (!_hyperspaceLastPressed && key == PlayKey.Down)
-                {
+                case PlayKey.Down when !_hyperspaceLastPressed:
                     _hyperspaceLastPressed = true;
                     _game.Hyperspace();
-                }
+                    break;
 
                 // Shooting (can't be held down)
-                else if (!_shootingLastPressed && key == PlayKey.Space)
-                {
+                case PlayKey.Space when !_shootingLastPressed:
                     _shootingLastPressed = true;
-                    _game.Shoot();
-                }
+                    _game.Shoot(CurrentWeapon);
+                    break;
 
-                // Pause can't be held down)
-                else if (!_pauseLastPressed && key == PlayKey.P)
-                {
+                // Shooting (can't be held down)
+                case PlayKey.P when !_pauseLastPressed:
                     _pauseLastPressed = true;
                     _game.Pause();
-                }
+                    break;
             }
         }
 
@@ -212,29 +224,38 @@ namespace Asteroids.Standard
         /// <param name="key"><see cref="PlayKey"/> to apply.</param>
         public void KeyUp(PlayKey key)
         {
-            // Rotate Left
-            if (key == PlayKey.Left)
-                _leftPressed = false;
+            switch (key)
+            {
+                // Rotate Left
+                case PlayKey.Left:
+                    _leftPressed = false;
+                    break;
 
-            // Rotate Right
-            else if (key == PlayKey.Right)
-                _rightPressed = false;
+                // Rotate Right
+                case PlayKey.Right:
+                    _rightPressed = false;
+                    break;
 
-            // Thrust
-            else if (key == PlayKey.Up)
-                _upPressed = false;
+                // Thrust
+                case PlayKey.Up:
+                    _upPressed = false;
+                    break;
 
-            // Hyperspace - require key up before key down
-            else if (key == PlayKey.Down)
-                _hyperspaceLastPressed = false;
+                // Hyperspace - require key up before key down
+                case PlayKey.Down:
+                    _hyperspaceLastPressed = false;
+                    break;
 
-            // Shooting - require key up before key down
-            else if (key == PlayKey.Space)
-                _shootingLastPressed = false;
+                // Shooting - require key up before key down
+                case PlayKey.Space:
+                    _shootingLastPressed = false;
+                    break;
 
-            // Pause - require key up before key down
-            else if (key == PlayKey.P)
-                _pauseLastPressed = false;
+                // Pause - require key up before key down
+                case PlayKey.P:
+                    _pauseLastPressed = false;
+                    break;
+            }
         }
 
         #endregion

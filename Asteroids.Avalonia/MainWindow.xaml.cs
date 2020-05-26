@@ -151,6 +151,14 @@ namespace Asteroids.Avalonia
                     key = PlayKey.P;
                     break;
 
+                case Key.D1:
+                    key = PlayKey.One;
+                    break;
+
+                case Key.D2:
+                    key = PlayKey.Two;
+                    break;
+
                 default:
                     return;
             }

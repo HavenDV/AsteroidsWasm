@@ -7,6 +7,8 @@
         Up,
         Down,
         Space,
-        P
+        P,
+        One,
+        Two,
     }
 }
