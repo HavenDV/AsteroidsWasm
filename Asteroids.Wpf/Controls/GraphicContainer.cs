@@ -10,7 +10,7 @@ using System.Windows.Threading;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Interfaces;
 
-namespace Asteroids.Wpf.Classes
+namespace Asteroids.Wpf.Controls
 {
     /// <summary>
     /// Control to paint vectors based on <see cref="WriteableBitmap"/>.
