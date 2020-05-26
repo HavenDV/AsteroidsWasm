@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using Asteroids.Standard.Enums;
 
+#nullable enable
+
 namespace Asteroids.Standard.Sounds
 {
     /// <summary>
@@ -31,7 +33,7 @@ namespace Asteroids.Standard.Sounds
         /// <summary>
         /// Fires when a call is made within the game engine to play a sound.
         /// </summary>
-        public static event EventHandler<ActionSound> SoundTriggered;
+        public static event EventHandler<ActionSound>? SoundTriggered;
 
         /// <summary>
         /// Invokes <see cref="SoundTriggered"/> to play an <see cref="ActionSound"/>.
