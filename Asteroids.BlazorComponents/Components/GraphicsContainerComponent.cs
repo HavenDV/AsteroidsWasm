@@ -114,7 +114,7 @@ namespace Asteroids.BlazorComponents.Components
         /// Wires the key press handlers.
         /// </summary>
         /// <param name="drawColorMap">Collection (read-only) of <see cref="DrawColor"/> used by the game engine and associated HEX-based (HTML) color strings.</param>
-        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, Color> drawColorMap)
         {
             ChildSvgContainer.Initialize(drawColorMap);
 

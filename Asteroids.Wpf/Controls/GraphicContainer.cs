@@ -41,12 +41,12 @@ namespace Asteroids.Wpf.Controls
         /// <summary>
         /// Initialize the <see cref="WriteableBitmap"/> with the current width and height.
         /// </summary>
-        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, System.Drawing.Color> drawColorMap)
         {
             ColorCache = drawColorMap
                 .ToDictionary(
                     pair => pair.Key, 
-                    pair => (Color)(ColorConverter.ConvertFromString(pair.Value) ?? Colors.White));
+                    pair => Color.FromArgb(pair.Value.A, pair.Value.R, pair.Value.G, pair.Value.B));
 
             //Since the control has no size yet simply draw a size bitmap
             Bitmap = BitmapFactory.New(0, 0);

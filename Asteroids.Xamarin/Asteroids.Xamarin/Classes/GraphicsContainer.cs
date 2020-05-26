@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Asteroids.Standard.Enums;
@@ -8,24 +6,23 @@ using Asteroids.Standard.Interfaces;
 using SkiaSharp;
 using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
+using Color = System.Drawing.Color;
 
 namespace Asteroids.Xamarin.Classes
 {
     public class GraphicsContainer : SKCanvasView, IGraphicContainer, IRegisterable
     {
-        private IDictionary<DrawColor, SKColor> _colorCache;
+        private IReadOnlyDictionary<DrawColor, SKColor> _colorCache;
         private IEnumerable<IGraphicLine> _lastLines = new List<IGraphicLine>();
         private IEnumerable<IGraphicPolygon> _lastPolygons = new List<IGraphicPolygon>();
 
 
-        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, Color> drawColorMap)
         {
-            _colorCache = new ReadOnlyDictionary<DrawColor, SKColor>(
-                drawColorMap.ToDictionary(
-                    kvp => kvp.Key
-                    , kvp => ColorHexToColor(kvp.Value)
-                )
-            );
+            _colorCache = drawColorMap
+                .ToDictionary(
+                    pair => pair.Key,
+                    pair => ColorToSkColor(pair.Value));
 
             PaintSurface += OnPaintSurface;
             return Task.CompletedTask;
@@ -77,17 +74,9 @@ namespace Asteroids.Xamarin.Classes
 
         #region Color
 
-        private static SKColor ColorHexToColor(string colorHex)
+        private static SKColor ColorToSkColor(Color color)
         {
-            var hex = colorHex.Replace("#", "");
-            var length = hex.Length;
-
-            var bytes = new byte[length / 2];
-
-            for (var i = 0; i < length; i += 2)
-                bytes[i / 2] = Convert.ToByte(hex.Substring(i, 2), 16);
-
-            return new SKColor(bytes[0], bytes[1], bytes[2]);
+            return new SKColor(color.R, color.G, color.B, color.A);
         }
 
         #endregion

@@ -21,11 +21,11 @@ namespace Asteroids.WinForms.Controls
 
         #region Methods
 
-        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, Color> drawColorMap)
         {
             ColorCache = drawColorMap.ToDictionary(
                 pair => pair.Key, 
-                pair => new Pen(ColorTranslator.FromHtml(pair.Value))
+                pair => new Pen(pair.Value)
             );
 
             return Task.CompletedTask;

@@ -2,7 +2,6 @@
 using System.Drawing;
 using System.Linq;
 using Asteroids.Standard.Enums;
-using Asteroids.Standard.Helpers;
 
 namespace Asteroids.Standard.Colors
 {
@@ -14,12 +13,12 @@ namespace Asteroids.Standard.Colors
         /// <summary>
         /// Collection of <see cref="DrawColor"/> HEX string values used by the game engine.
         /// </summary>
-        public static IReadOnlyDictionary<DrawColor, string> DrawColorMap { get; } = new Dictionary<DrawColor, string>
+        public static IReadOnlyDictionary<DrawColor, Color> DrawColorMap { get; } = new Dictionary<DrawColor, Color>
         {
-            [DrawColor.White] = Color.White.ToHexString(),
-            [DrawColor.Red] = Color.Red.ToHexString(),
-            [DrawColor.Yellow] = Color.Yellow.ToHexString(),
-            [DrawColor.Orange] = Color.Orange.ToHexString(),
+            [DrawColor.White] = Color.White,
+            [DrawColor.Red] = Color.Red,
+            [DrawColor.Yellow] = Color.Yellow,
+            [DrawColor.Orange] = Color.Orange,
         };
 
         /// <summary>

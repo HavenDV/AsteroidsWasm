@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using Asteroids.Standard.Enums;
@@ -16,7 +16,7 @@ namespace Asteroids.BlazorComponents.Components
     {
         private const string StylePolygon = "stroke=width:1px; fill:transparent; ";
 
-        private IReadOnlyDictionary<DrawColor, string> _colors;
+        private IReadOnlyDictionary<DrawColor, Color> _colors;
 
         private const string AttributeLine = "line";
         private const string AttributeLineX1 = "x1";
@@ -37,9 +37,9 @@ namespace Asteroids.BlazorComponents.Components
         /// Initialize the SVG in anticipation of drawing.
         /// </summary>
         /// <param name="drawColorMap">Collection (read-only) of <see cref="DrawColor"/> used by the game engine and associated HEX-based (HTML) color strings.</param>
-        public void Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
+        public void Initialize(IReadOnlyDictionary<DrawColor, Color> drawColorMap)
         {
-            _colors = new Dictionary<DrawColor, string>(drawColorMap);
+            _colors = drawColorMap;
         }
 
         /// <summary>

@@ -1,15 +1,11 @@
 ﻿using Asteroids.Standard.Enums;
 using Asteroids.Standard.Interfaces;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Immutable;
-using Brushes = Avalonia.Media.Brushes;
-using Color = System.Drawing.Color;
 using Point = Avalonia.Point;
 
 namespace Asteroids.Avalonia.Controls
@@ -19,7 +15,7 @@ namespace Asteroids.Avalonia.Controls
         #region Properties
 
         // Pen is IDisposable
-        private IReadOnlyDictionary<DrawColor, Color>? ColorCache { get; set; }
+        private IReadOnlyDictionary<DrawColor, ImmutableSolidColorBrush>? ColorCache { get; set; }
         private IEnumerable<IGraphicLine> LastLines { get; set; } = new List<IGraphicLine>();
         private IEnumerable<IGraphicPolygon> LastPolygons { get; set; } = new List<IGraphicPolygon>();
 
@@ -27,14 +23,12 @@ namespace Asteroids.Avalonia.Controls
 
         #region Methods
 
-        public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
+        public Task Initialize(IReadOnlyDictionary<DrawColor, System.Drawing.Color> drawColorMap)
         {
-            ColorCache = new ReadOnlyDictionary<DrawColor, Color>(
-                drawColorMap.ToDictionary(
-                    kvp => kvp.Key
-                    , kvp => (Color)(new ColorConverter().ConvertFromString(kvp.Value) ?? Colors.White)
-                )
-            );
+            ColorCache = drawColorMap
+                .ToDictionary(
+                    pair => pair.Key,
+                    pair => new ImmutableSolidColorBrush(new Color(pair.Value.A, pair.Value.R, pair.Value.G, pair.Value.B)));
 
             return Task.CompletedTask;
         }
@@ -64,16 +58,16 @@ namespace Asteroids.Avalonia.Controls
             foreach (var line in LastLines)
             {
                 context.DrawLine(
-                    new ImmutablePen(Brushes.AliceBlue), 
+                    new ImmutablePen(ColorCache[line.Color]), 
                     new Point(line.Point1.X, line.Point1.Y), 
                     new Point(line.Point2.X, line.Point2.Y));
             }
-            foreach (var poly in LastPolygons)
+            foreach (var polygon in LastPolygons)
             {
                 context.DrawGeometry(
-                    Brushes.AliceBlue,
-                    new ImmutablePen(Brushes.AliceBlue),
-                    new PolylineGeometry(poly.Points.Select(i => new Point(i.X, i.Y)), true));
+                    ColorCache[polygon.Color],
+                    new ImmutablePen(ColorCache[polygon.Color]),
+                    new PolylineGeometry(polygon.Points.Select(i => new Point(i.X, i.Y)), true));
             }
         }
 
