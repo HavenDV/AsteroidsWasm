@@ -19,7 +19,7 @@ namespace Asteroids.Avalonia.Controls
         #region Properties
 
         // Pen is IDisposable
-        private IReadOnlyDictionary<DrawColor, Color> ColorCache { get; set; }
+        private IReadOnlyDictionary<DrawColor, Color>? ColorCache { get; set; }
         private IEnumerable<IGraphicLine> LastLines { get; set; } = new List<IGraphicLine>();
         private IEnumerable<IGraphicPolygon> LastPolygons { get; set; } = new List<IGraphicPolygon>();
 
