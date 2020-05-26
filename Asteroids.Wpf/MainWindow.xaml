@@ -4,9 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:Asteroids.Wpf.Controls"
-        ContentRendered="Window_Rendered"
         KeyDown="Window_KeyDown"
         KeyUp="Window_KeyUp"
+        Loaded="MainWindow_OnLoaded"
         Background="Black" mc:Ignorable="d"
         Title="MainWindow" Width="800" Height="600">
 

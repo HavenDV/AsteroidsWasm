@@ -82,12 +82,10 @@ namespace Asteroids.Wpf
             });
         }
 
-        private async void Window_Rendered(object sender, EventArgs e)
+        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ContentRendered -= Window_Rendered;
-
             await Controller.Initialize(
-                MainContainer, 
+                MainContainer,
                 new Rectangle(0, 0, (int)MainContainer.ActualWidth, (int)MainContainer.ActualHeight));
         }
 
@@ -186,6 +184,5 @@ namespace Asteroids.Wpf
 
 
         #endregion
-
     }
 }
