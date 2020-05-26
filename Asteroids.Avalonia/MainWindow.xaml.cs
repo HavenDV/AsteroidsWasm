@@ -8,8 +8,6 @@ using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 
-#nullable enable
-
 namespace Asteroids.Avalonia
 {
     public class MainWindow : Window
