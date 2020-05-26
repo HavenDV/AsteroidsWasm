@@ -12,13 +12,10 @@ namespace Asteroids.BlazorComponents.Classes
         /// <remarks>Encoding.UTF8.GetBytes can be used to convert back.</remarks>
         public static string ToBase64(this Stream stream)
         {
-            byte[] bytes;
-            using (var memoryStream = new MemoryStream())
-            {
-                stream.Position = 0;
-                stream.CopyTo(memoryStream);
-                bytes = memoryStream.ToArray();
-            }
+            using var memoryStream = new MemoryStream();
+            stream.Position = 0;
+            stream.CopyTo(memoryStream);
+            var bytes = memoryStream.ToArray();
 
             return Convert.ToBase64String(bytes);
         }
