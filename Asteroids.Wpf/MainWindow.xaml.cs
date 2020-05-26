@@ -14,54 +14,87 @@ namespace Asteroids.Wpf
 {
     public partial class MainWindow : IDisposable
     {
-        private readonly IGameController _controller;
-        private readonly IDictionary<ActionSound, SoundPlayer> _soundPlayers;
-        private SoundPlayer _soundPlaying;
+        #region Properties
+
+        private IGameController Controller { get; }
+        private IDictionary<ActionSound, SoundPlayer> SoundPlayers { get; }
+        private SoundPlayer ActiveSoundPlayer { get; set; }
+
+        #endregion
+
+        #region Constructors
 
         public MainWindow()
         {
             InitializeComponent();
 
-            _controller = new GameController();
+            Controller = new GameController();
 
-            _soundPlayers = _controller
+            SoundPlayers = Controller
                 .ActionSounds
                 .ToDictionary(
-                    kvp => kvp.Key
-                    , kvp => new SoundPlayer(kvp.Value)
-                );
+                    pair => pair.Key, 
+                    pair => new SoundPlayer(pair.Value));
 
-            foreach (var player in _soundPlayers)
+            foreach (var player in SoundPlayers)
+            {
                 player.Value.Load();
+            }
 
-            _controller.SoundPlayed += OnSoundPlayed;
+            Controller.SoundPlayed += OnSoundPlayed;
         }
+
+        #endregion
+
+        #region Methods
+
+        public void Dispose()
+        {
+            Controller.SoundPlayed -= OnSoundPlayed;
+
+            foreach (var player in SoundPlayers)
+            {
+                player.Value.Dispose();
+            }
+
+            Controller.Dispose();
+            MainContainer.Dispose();
+        }
+
+        #endregion
+
+        #region Event Handlers
 
         private void OnSoundPlayed(object sender, ActionSound sound)
         {
-            if (_soundPlaying != null)
+            if (ActiveSoundPlayer != null)
+            {
                 return;
+            }
 
-            _soundPlaying = _soundPlayers[sound];
+            ActiveSoundPlayer = SoundPlayers[sound];
 
             Task.Factory.StartNew(() =>
             {
-                _soundPlaying.Stream.Position = 0;
-                _soundPlaying.PlaySync();
-                _soundPlaying = null;
+                ActiveSoundPlayer.Stream.Position = 0;
+                ActiveSoundPlayer.PlaySync();
+                ActiveSoundPlayer = null;
             });
         }
 
         private async void Window_Rendered(object sender, EventArgs e)
         {
             ContentRendered -= Window_Rendered;
-            var rec = new Rectangle(0, 0, (int)MainContainer.ActualWidth, (int)MainContainer.ActualHeight);
-            await _controller.Initialize(MainContainer, rec);
+
+            await Controller.Initialize(
+                MainContainer, 
+                new Rectangle(0, 0, (int)MainContainer.ActualWidth, (int)MainContainer.ActualHeight));
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            _controller.ResizeGame(new Rectangle(0, 0, (int)e.NewSize.Width, (int)e.NewSize.Height));
+            Controller.ResizeGame(
+                new Rectangle(0, 0, (int)e.NewSize.Width, (int)e.NewSize.Height));
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -71,7 +104,7 @@ namespace Asteroids.Wpf
             {
                 case Key.Escape:
                     // Escape during a title screen exits the game
-                    if (_controller.GameStatus == GameMode.Title)
+                    if (Controller.GameStatus == GameMode.Title)
                     {
                         Application.Current.Shutdown();
                         return;
@@ -108,7 +141,7 @@ namespace Asteroids.Wpf
                     return;
             }
 
-            _controller.KeyDown(key);
+            Controller.KeyDown(key);
         }
 
         private void Window_KeyUp(object sender, KeyEventArgs e)
@@ -148,18 +181,11 @@ namespace Asteroids.Wpf
                     return;
             }
 
-            _controller.KeyUp(key);
+            Controller.KeyUp(key);
         }
 
-        public void Dispose()
-        {
-            _controller.SoundPlayed -= OnSoundPlayed;
 
-            foreach (var player in _soundPlayers)
-                player.Value.Dispose();
+        #endregion
 
-            _controller.Dispose();
-            MainContainer.Dispose();
-        }
     }
 }
