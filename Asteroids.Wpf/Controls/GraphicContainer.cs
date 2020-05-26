@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -17,9 +16,15 @@ namespace Asteroids.Wpf.Controls
     /// </summary>
     public class GraphicContainer : Image, IGraphicContainer, IDisposable
     {
-        private readonly Dispatcher _mainDispatcher = Dispatcher.CurrentDispatcher;
-        private IDictionary<DrawColor, Color> _colorCache;
-        private WriteableBitmap _bitmap;
+        #region Properties
+
+        private Dispatcher MainDispatcher { get; } = Dispatcher.CurrentDispatcher;
+        private IReadOnlyDictionary<DrawColor, Color>? ColorCache { get; set; }
+        private WriteableBitmap? Bitmap { get; set; }
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Creates a new instance of <see cref="GraphicContainer"/>.
@@ -29,37 +34,24 @@ namespace Asteroids.Wpf.Controls
             SizeChanged += OnSizeChanged;
         }
 
-        /// <summary>
-        /// Resize the <see cref="WriteableBitmap"/> based on new control size.
-        /// </summary>
-        private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
-        {
-            //Resize the current bitmap
-            _bitmap = _bitmap.Resize(
-                (int)e.NewSize.Width
-                , (int)e.NewSize.Height
-                , WriteableBitmapExtensions.Interpolation.Bilinear
-            );
+        #endregion
 
-            Source = _bitmap;
-        }
+        #region Methods
 
         /// <summary>
         /// Initialize the <see cref="WriteableBitmap"/> with the current width and height.
         /// </summary>
         public Task Initialize(IReadOnlyDictionary<DrawColor, string> drawColorMap)
         {
-            //Cache the colors
-            _colorCache = new ReadOnlyDictionary<DrawColor, Color>(
-                drawColorMap.ToDictionary(
-                    kvp => kvp.Key
-                    , kvp => (Color) (ColorConverter.ConvertFromString(kvp.Value) ?? Colors.White)
-                )
-            );
+            ColorCache = drawColorMap
+                .ToDictionary(
+                    pair => pair.Key, 
+                    pair => (Color)(ColorConverter.ConvertFromString(pair.Value) ?? Colors.White));
 
             //Since the control has no size yet simply draw a size bitmap
-            _bitmap = BitmapFactory.New(0, 0);
-            Source = _bitmap;
+            Bitmap = BitmapFactory.New(0, 0);
+            Source = Bitmap;
+
             return Task.CompletedTask;
         }
 
@@ -69,42 +61,42 @@ namespace Asteroids.Wpf.Controls
         /// </summary>
         public async Task Draw(IEnumerable<IGraphicLine> lines, IEnumerable<IGraphicPolygon> polygons)
         {
+            ColorCache = ColorCache ?? throw new InvalidOperationException("ColorCache is null");
+
             try
             {
-                await _mainDispatcher.InvokeAsync(() =>
+                await MainDispatcher.InvokeAsync(() =>
                 {
-                    _bitmap.Clear();
+                    Bitmap.Clear();
 
-                    foreach (var gline in lines)
+                    foreach (var line in lines)
                     {
-                        _bitmap.DrawLine(
-                            gline.Point1.X
-                            , gline.Point1.Y
-                            , gline.Point2.X
-                            , gline.Point2.Y
-                            , _colorCache[gline.Color]
+                        Bitmap.DrawLine(
+                            line.Point1.X,
+                            line.Point1.Y,
+                            line.Point2.X,
+                            line.Point2.Y, 
+                            ColorCache[line.Color]
                         );
                     }
 
-                    foreach (var gpoly in polygons)
+                    foreach (var polygon in polygons)
                     {
-                        var points = new int[gpoly.Points.Count * 2 + 2];
+                        var points = new int[polygon.Points.Count * 2 + 2];
 
                         for (int i = 0, c = 0; i < points.Length - 2; i += 2, c++)
                         {
-                            var p = gpoly.Points[c];
-                            points[i] = p.X;
-                            points[i + 1] = p.Y;
+                            var point = polygon.Points[c];
+
+                            points[i] = point.X;
+                            points[i + 1] = point.Y;
                         }
 
-                        var first = gpoly.Points.First();
+                        var first = polygon.Points.First();
                         points[points.Length - 2] = first.X;
                         points[points.Length - 1] = first.Y;
 
-                        _bitmap.DrawPolyline(
-                            points
-                            , _colorCache[gpoly.Color]
-                        );
+                        Bitmap.DrawPolyline(points, ColorCache[polygon.Color]);
                     }
                 });
             }
@@ -121,5 +113,27 @@ namespace Asteroids.Wpf.Controls
         {
             SizeChanged -= OnSizeChanged;
         }
+
+        #endregion
+
+        #region Event Handlers
+
+        /// <summary>
+        /// Resize the <see cref="WriteableBitmap"/> based on new control size.
+        /// </summary>
+        private void OnSizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        {
+            //Resize the current bitmap
+            Bitmap = Bitmap.Resize(
+                (int)e.NewSize.Width,
+                (int)e.NewSize.Height,
+                WriteableBitmapExtensions.Interpolation.Bilinear
+            );
+
+            Source = Bitmap;
+        }
+
+
+        #endregion
     }
 }

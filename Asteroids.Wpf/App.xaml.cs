@@ -2,21 +2,31 @@
 
 namespace Asteroids.Wpf
 {
-    public partial class App : Application
+    public partial class App
     {
-        private MainWindow mainWindow;
+        #region Properties
+
+        private MainWindow? Window { get; set; }
+
+        #endregion
+
+        #region Overrides
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            mainWindow = new MainWindow();
-            mainWindow.Show();
+
+            Window = new MainWindow();
+            Window.Show();
 
         }
         protected override void OnExit(ExitEventArgs e)
         {
-            mainWindow.Dispose();
+            Window?.Dispose();
+
             base.OnExit(e);
         }
+
+        #endregion
     }
 }

@@ -18,7 +18,7 @@ namespace Asteroids.Wpf
 
         private IGameController Controller { get; }
         private IDictionary<ActionSound, SoundPlayer> SoundPlayers { get; }
-        private SoundPlayer ActiveSoundPlayer { get; set; }
+        private SoundPlayer? ActiveSoundPlayer { get; set; }
 
         #endregion
 
@@ -65,7 +65,7 @@ namespace Asteroids.Wpf
 
         #region Event Handlers
 
-        private void OnSoundPlayed(object sender, ActionSound sound)
+        private void OnSoundPlayed(object? sender, ActionSound sound)
         {
             if (ActiveSoundPlayer != null)
             {
@@ -82,20 +82,20 @@ namespace Asteroids.Wpf
             });
         }
 
-        private async void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        private async void MainWindow_OnLoaded(object? sender, RoutedEventArgs e)
         {
             await Controller.Initialize(
                 MainContainer,
                 new Rectangle(0, 0, (int)MainContainer.ActualWidth, (int)MainContainer.ActualHeight));
         }
 
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void Window_SizeChanged(object? sender, SizeChangedEventArgs e)
         {
             Controller.ResizeGame(
                 new Rectangle(0, 0, (int)e.NewSize.Width, (int)e.NewSize.Height));
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object? sender, KeyEventArgs e)
         {
             PlayKey key;
             switch (e.Key)
@@ -142,7 +142,7 @@ namespace Asteroids.Wpf
             Controller.KeyDown(key);
         }
 
-        private void Window_KeyUp(object sender, KeyEventArgs e)
+        private void Window_KeyUp(object? sender, KeyEventArgs e)
         {
             PlayKey key;
             switch (e.Key)
