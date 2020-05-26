@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using Asteroids.Standard.Enums;
@@ -23,7 +22,7 @@ namespace Asteroids.Standard.Sounds
         /// <summary>
         /// Collection of <see cref="ActionSound"/> WAV file <see cref="Stream"/>s.
         /// </summary>
-        public static IDictionary<ActionSound, Stream> SoundDictionary { get; }
+        public static IReadOnlyDictionary<ActionSound, Stream> SoundDictionary { get; }
 
         #endregion
 
@@ -50,13 +49,13 @@ namespace Asteroids.Standard.Sounds
 
         static ActionSounds()
         {
-            var asmName = $"{nameof(Asteroids)}.{nameof(Standard)}";
-            var dirName = $"{asmName}.{SoundDir}";
-            var assembly = AppDomain
-                .CurrentDomain
-                .GetAssemblies().First(a => a.GetName().Name == asmName);
+            var assemblyName = $"{nameof(Asteroids)}.{nameof(Standard)}";
+            var dirName = $"{assemblyName}.{SoundDir}";
+            var assembly = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .First(a => a.GetName().Name == assemblyName);
 
-            SoundDictionary = new ReadOnlyDictionary<ActionSound, Stream>(new Dictionary<ActionSound, Stream>
+            SoundDictionary = new Dictionary<ActionSound, Stream>
             {
                 {ActionSound.Fire, assembly.GetManifestResourceStream($"{dirName}.fire.wav")},
                 {ActionSound.Life, assembly.GetManifestResourceStream($"{dirName}.life.wav")},
@@ -65,7 +64,7 @@ namespace Asteroids.Standard.Sounds
                 {ActionSound.Explode2, assembly.GetManifestResourceStream($"{dirName}.explode2.wav")},
                 {ActionSound.Explode3, assembly.GetManifestResourceStream($"{dirName}.explode3.wav")},
                 {ActionSound.Saucer, assembly.GetManifestResourceStream($"{dirName}.lsaucer.wav")},
-            });
+            };
         }
 
         #endregion
