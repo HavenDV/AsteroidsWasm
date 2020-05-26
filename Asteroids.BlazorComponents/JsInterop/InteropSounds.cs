@@ -46,12 +46,12 @@ namespace Asteroids.BlazorComponents.JsInterop
         #region Public Methods
 
         /// <summary>
-        /// Loads sound <see cref="System.IO.Stream"/>s stored in <see cref="ActionSounds.SoundDictionary"/>
+        /// Loads sound <see cref="Stream"/>s stored in <see cref="ActionSounds.SoundDictionary"/>
         /// to HTML localStorage.
         /// </summary>
         /// <param name="actionSoundMap">Collection of <see cref="ActionSound"/> <see cref="Stream"/>s to cache.</param>
         /// <returns>Indication if the sounds were loaded successfully.</returns>
-        public async Task<bool> Initialize(IDictionary<ActionSound, Stream> actionSoundMap)
+        public async Task<bool> Initialize(IReadOnlyDictionary<ActionSound, Stream> actionSoundMap)
         {
             //Load the sounds in JavaScript indexed by enum value
             var sounds = actionSoundMap

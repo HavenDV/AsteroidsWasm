@@ -55,6 +55,6 @@ namespace Asteroids.Standard.Interfaces
         /// <summary>
         /// Collection (read-only) of <see cref="ActionSounds"/> used by the game engine and associated WAV <see cref="Stream"/>s.
         /// </summary>
-        IDictionary<ActionSound, Stream> ActionSounds { get; }
+        IReadOnlyDictionary<ActionSound, Stream> ActionSounds { get; }
     }
 }

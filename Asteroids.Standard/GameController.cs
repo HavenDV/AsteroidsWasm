@@ -33,7 +33,7 @@ namespace Asteroids.Standard
         /// <summary>
         /// Collection (read-only) of <see cref="ActionSounds"/> used by the game engine and associated WAV <see cref="Stream"/>s.
         /// </summary>
-        public IDictionary<ActionSound, Stream> ActionSounds => Sounds.ActionSounds.SoundDictionary;
+        public IReadOnlyDictionary<ActionSound, Stream> ActionSounds => Sounds.ActionSounds.SoundDictionary;
 
         #endregion
 
