@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Asteroids.WinForms
+namespace Asteroids.WinForms.Forms
 {
     partial class MainForm
     {
