@@ -25,9 +25,6 @@ namespace Asteroids.Engine.Base
             //templates are drawn nose "up"
             Radians = 180 * BaseScreenCanvas.RadiansPerDegree;
 
-            _points = new List<Point>();
-            PointsTransformed = new List<Point>();
-
             CurrLoc = location;
         }
 
@@ -39,12 +36,12 @@ namespace Asteroids.Engine.Base
         /// <summary>
         /// Points is used for the internal cartesian system.
         /// </summary>
-        protected readonly IList<Point> _points;
+        private IList<Point> Points { get; } = new List<Point>();
 
         /// <summary>
         /// Points is used for the internal cartesian system with rotation angle applied.
         /// </summary>
-        protected IList<Point> PointsTransformed; // exposed to simplify explosions
+        private IList<Point> PointsTransformed { get; } = new List<Point>(); // exposed to simplify explosions
 
 
         /// <summary>
@@ -56,7 +53,7 @@ namespace Asteroids.Engine.Base
         {
             lock (_updatePointsLock)
                 foreach (var point in points)
-                    _points.Add(point);
+                    Points.Add(point);
 
             lock (_updatePointsTransformedLock)
             {
@@ -94,7 +91,7 @@ namespace Asteroids.Engine.Base
         public void ClearPoints()
         {
             lock (_updatePointsLock)
-                _points.Clear();
+                Points.Clear();
 
             lock (_updatePointsTransformedLock)
                 PointsTransformed.Clear();
@@ -171,7 +168,7 @@ namespace Asteroids.Engine.Base
 
             var points = new List<Point>();
             lock (_updatePointsLock)
-                points.AddRange(_points);
+                points.AddRange(Points);
 
             //Re-transform the points
             var ptTransformed = new Point(0, 0);
