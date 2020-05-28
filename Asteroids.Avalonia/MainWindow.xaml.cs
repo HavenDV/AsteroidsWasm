@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Asteroids.Standard;
 using Asteroids.Standard.Enums;
 using Asteroids.Standard.Interfaces;
-using Asteroids.Standard.Utilities;
+using Asteroids.Engine.Utilities;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
