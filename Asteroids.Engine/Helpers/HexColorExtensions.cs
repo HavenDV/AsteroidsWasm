@@ -1,18 +1,18 @@
 ﻿using System.Drawing;
 
-namespace Asteroids.Standard.Helpers
+namespace Asteroids.Engine.Helpers
 {
     /// <summary>
     /// Helpers for converting HEX-based colors and strings.
     /// </summary>
-    public static class ColorHexStrings
+    public static class HexColorExtensions
     {
         /// <summary>
         /// Converts a <see cref="Color"/> to an html-formatted text string (e.g. #RRGGBB).
         /// </summary>
-        public static string ToHexString(this Color c)
+        public static string ToHex(this Color color)
         {
-            return $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+            return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
         }
     }
 }

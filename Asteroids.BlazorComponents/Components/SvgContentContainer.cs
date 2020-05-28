@@ -2,8 +2,8 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Asteroids.Engine.Helpers;
 using Asteroids.Standard.Enums;
-using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
@@ -77,7 +77,7 @@ namespace Asteroids.BlazorComponents.Components
                 builder.AddAttribute(count++, AttributeLineY1, line.Point1.Y);
                 builder.AddAttribute(count++, AttributeLineX2, line.Point2.X);
                 builder.AddAttribute(count++, AttributeLineY2, line.Point2.Y);
-                builder.AddAttribute(count++, AttributeStyle, $"{AttributeStroke}:{_colors[line.Color].ToHexString()}");
+                builder.AddAttribute(count++, AttributeStyle, $"{AttributeStroke}:{_colors[line.Color].ToHex()}");
                 builder.CloseElement();
             }
 
@@ -93,7 +93,7 @@ namespace Asteroids.BlazorComponents.Components
 
                 builder.OpenElement(count++, AttributePolygon);
                 builder.AddAttribute(count++, AttributePoints, points.ToString());
-                builder.AddAttribute(count++, AttributeStyle, $"{AttributeStroke}:{_colors[polygon.Color].ToHexString()}; {StylePolygon}");
+                builder.AddAttribute(count++, AttributeStyle, $"{AttributeStroke}:{_colors[polygon.Color].ToHex()}; {StylePolygon}");
                 builder.CloseElement();
             }
 
