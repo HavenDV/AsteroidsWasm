@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
-namespace Asteroids.Standard.Helpers
+namespace Asteroids.Engine.Helpers
 {
     /// <summary>
     /// Helpers for performing Geometric calculations.
