@@ -142,22 +142,16 @@ namespace Asteroids.Engine.Base
             var sinVal = Math.Sin(Radians);
             var cosVal = Math.Cos(Radians);
 
-            //Get points with some thread safety
-            var newPointsTransformed = new List<Point>();
-
-            //Re-transform the points
-            var ptTransformed = new Point(0, 0);
-            foreach (var point in Points.ToArray())
-            {
-                ptTransformed.X = (int)(point.X * cosVal + point.Y * sinVal);
-                ptTransformed.Y = (int)(point.X * sinVal - point.Y * cosVal);
-
-                newPointsTransformed.Add(ptTransformed);
-            }
-
             //Add the points
             PointsTransformed.Clear();
-            PointsTransformed.PushRange(newPointsTransformed.ToArray());
+            PointsTransformed.PushRange(Points
+                .ToArray()
+                .Select(point => new Point(0, 0)
+                {
+                    X = (int) (point.X * cosVal + point.Y * sinVal), 
+                    Y = (int) (point.X * sinVal - point.Y * cosVal)
+                })
+                .ToArray());
         }
 
         #endregion
