@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Asteroids.Engine.Helpers;
 using Asteroids.Engine.Screen;
 
@@ -19,9 +21,6 @@ namespace Asteroids.Engine.Base
         /// <param name="location">Absolute origin (bottom-left) of the object.</param>
         protected BaseScreenObject(Point location)
         {
-            _updatePointsLock = new object();
-            _updatePointsTransformedLock = new object();
-
             //templates are drawn nose "up"
             Radians = 180 * BaseScreenCanvas.RadiansPerDegree;
 
@@ -30,18 +29,15 @@ namespace Asteroids.Engine.Base
 
         #region Points for Drawing Object
 
-        protected readonly object _updatePointsLock;
-        protected readonly object _updatePointsTransformedLock;
-
         /// <summary>
         /// Points is used for the internal cartesian system.
         /// </summary>
-        private IList<Point> Points { get; } = new List<Point>();
+        private ConcurrentStack<Point> Points { get; } = new ConcurrentStack<Point>();
 
         /// <summary>
         /// Points is used for the internal cartesian system with rotation angle applied.
         /// </summary>
-        private IList<Point> PointsTransformed { get; } = new List<Point>(); // exposed to simplify explosions
+        private ConcurrentStack<Point> PointsTransformed { get; } = new ConcurrentStack<Point>(); // exposed to simplify explosions
 
 
         /// <summary>
@@ -51,37 +47,23 @@ namespace Asteroids.Engine.Base
         /// <returns>Index of the last point inserted.</returns>
         public int AddPoints(IList<Point> points)
         {
-            lock (_updatePointsLock)
-                foreach (var point in points)
-                    Points.Add(point);
+            Points.PushRange(points.ToArray());
+            PointsTransformed.PushRange(points.ToArray());
 
-            lock (_updatePointsTransformedLock)
-            {
-                foreach (var point in points)
-                    PointsTransformed.Add(point);
-
-                return PointsTransformed.Count - 1;
-            }
+            return PointsTransformed.Count - 1;
         }
 
         /// <summary>
         /// Returns transformed <see cref="Point"/>s to generate object 
         /// polygon in a thead-safe manner relative to current location on the 
-        /// <see cref="ScreenCanvas"/>.
         /// </summary>
         /// <returns>Collection of <see cref="Point"/>s.</returns>
         public IList<Point> GetPoints()
         {
-            var points = new List<Point>();
-
-            lock (_updatePointsTransformedLock)
-                foreach (var pt in PointsTransformed)
-                    points.Add(new Point(
-                        pt.X + CurrLoc.X
-                        , pt.Y + CurrLoc.Y
-                    ));
-
-            return points;
+            return PointsTransformed
+                .ToArray()
+                .Select(point => new Point(point.X + CurrLoc.X, point.Y + CurrLoc.Y))
+                .ToArray();
         }
 
         /// <summary>
@@ -90,11 +72,8 @@ namespace Asteroids.Engine.Base
         /// </summary>
         public void ClearPoints()
         {
-            lock (_updatePointsLock)
-                Points.Clear();
-
-            lock (_updatePointsTransformedLock)
-                PointsTransformed.Clear();
+            Points.Clear();
+            PointsTransformed.Clear();
         }
 
         #endregion
@@ -166,26 +145,19 @@ namespace Asteroids.Engine.Base
             //Get points with some thread safety
             var newPointsTransformed = new List<Point>();
 
-            var points = new List<Point>();
-            lock (_updatePointsLock)
-                points.AddRange(Points);
-
             //Re-transform the points
             var ptTransformed = new Point(0, 0);
-            foreach (var pt in points)
+            foreach (var point in Points.ToArray())
             {
-                ptTransformed.X = (int)(pt.X * cosVal + pt.Y * sinVal);
-                ptTransformed.Y = (int)(pt.X * sinVal - pt.Y * cosVal);
+                ptTransformed.X = (int)(point.X * cosVal + point.Y * sinVal);
+                ptTransformed.Y = (int)(point.X * sinVal - point.Y * cosVal);
+
                 newPointsTransformed.Add(ptTransformed);
             }
 
             //Add the points
-            lock (_updatePointsTransformedLock)
-            {
-                PointsTransformed.Clear();
-                foreach (var pt in newPointsTransformed)
-                    PointsTransformed.Add(pt);
-            }
+            PointsTransformed.Clear();
+            PointsTransformed.PushRange(newPointsTransformed.ToArray());
         }
 
         #endregion
