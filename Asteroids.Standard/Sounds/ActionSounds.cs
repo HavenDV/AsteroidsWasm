@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using Asteroids.Engine.Sounds;
 using Asteroids.Standard.Enums;
 
 #nullable enable
@@ -13,18 +13,17 @@ namespace Asteroids.Standard.Sounds
     /// </summary>
     internal static class ActionSounds
     {
-        #region Constants
-
-        private const string SoundDir = "Sounds";
-
-        #endregion
-
         #region Properties
 
         /// <summary>
         /// Collection of <see cref="ActionSound"/> WAV file <see cref="Stream"/>s.
         /// </summary>
-        public static IReadOnlyDictionary<ActionSound, Stream> SoundDictionary { get; }
+        private static BaseActionSounds<ActionSound> BaseActionSounds { get; }
+
+        /// <summary>
+        /// Collection of <see cref="ActionSound"/> WAV file <see cref="Stream"/>s.
+        /// </summary>
+        public static IReadOnlyDictionary<ActionSound, Stream> SoundDictionary => BaseActionSounds.SoundDictionary;
 
         #endregion
 
@@ -51,22 +50,16 @@ namespace Asteroids.Standard.Sounds
 
         static ActionSounds()
         {
-            var assemblyName = $"{nameof(Asteroids)}.{nameof(Standard)}";
-            var dirName = $"{assemblyName}.{SoundDir}";
-            var assembly = AppDomain.CurrentDomain
-                .GetAssemblies()
-                .First(a => a.GetName().Name == assemblyName);
-
-            SoundDictionary = new Dictionary<ActionSound, Stream>
+            BaseActionSounds = new BaseActionSounds<ActionSound>(new Dictionary<ActionSound, string>
             {
-                {ActionSound.Fire, assembly.GetManifestResourceStream($"{dirName}.fire.wav")},
-                {ActionSound.Life, assembly.GetManifestResourceStream($"{dirName}.life.wav")},
-                {ActionSound.Thrust, assembly.GetManifestResourceStream($"{dirName}.thrust.wav")},
-                {ActionSound.Explode1, assembly.GetManifestResourceStream($"{dirName}.explode1.wav")},
-                {ActionSound.Explode2, assembly.GetManifestResourceStream($"{dirName}.explode2.wav")},
-                {ActionSound.Explode3, assembly.GetManifestResourceStream($"{dirName}.explode3.wav")},
-                {ActionSound.Saucer, assembly.GetManifestResourceStream($"{dirName}.lsaucer.wav")},
-            };
+                {ActionSound.Fire, "fire.wav"},
+                {ActionSound.Life, "life.wav"},
+                {ActionSound.Thrust, "thrust.wav"},
+                {ActionSound.Explode1, "explode1.wav"},
+                {ActionSound.Explode2, "explode2.wav"},
+                {ActionSound.Explode3, "explode3.wav"},
+                {ActionSound.Saucer, "lsaucer.wav"},
+            }, $"{nameof(Asteroids)}.{nameof(Standard)}", "Sounds");
         }
 
         #endregion

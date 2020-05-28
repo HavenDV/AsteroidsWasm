@@ -15,4 +15,8 @@
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Asteroids.Engine\Asteroids.Engine.csproj" />
+  </ItemGroup>
+
 </Project>

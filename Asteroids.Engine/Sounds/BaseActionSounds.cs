@@ -8,40 +8,21 @@ namespace Asteroids.Engine.Sounds
     /// <summary>
     /// Collection of <see cref="Stream"/>s.
     /// </summary>
-    public class BaseActionSounds
+    public class BaseActionSounds<T>
     {
         #region Properties
 
         /// <summary>
         /// Collection of <see cref="Stream"/> WAV file <see cref="Stream"/>s.
         /// </summary>
-        public IReadOnlyDictionary<string, Stream> SoundDictionary { get; }
-
-        #endregion
-
-        #region Events
-
-        /// <summary>
-        /// Fires when a call is made within the game engine to play a sound.
-        /// </summary>
-        public event EventHandler<Stream>? SoundTriggered;
-
-        /// <summary>
-        /// Invokes <see cref="SoundTriggered"/> to play an <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="sender">Calling object.</param>
-        /// <param name="value">Sound to play.</param>
-        public void OnSoundTriggered(object sender, Stream value)
-        {
-            SoundTriggered?.Invoke(sender, value);
-        }
+        public IReadOnlyDictionary<T, Stream> SoundDictionary { get; }
 
         #endregion
 
         #region Constructors
 
         public BaseActionSounds(
-            IEnumerable<string> names, 
+            IReadOnlyDictionary<T, string> dictionary, 
             string assemblyName, 
             string soundDir)
         {
@@ -50,9 +31,9 @@ namespace Asteroids.Engine.Sounds
                 .First(a => a.GetName().Name == assemblyName);
 
             var dirName = $"{assemblyName}.{soundDir}";
-            SoundDictionary = names.ToDictionary(
-                name => name,
-                name => assembly.GetManifestResourceStream($"{dirName}.{name}"));
+            SoundDictionary = dictionary.ToDictionary(
+                pair => pair.Key,
+                pair => assembly.GetManifestResourceStream($"{dirName}.{pair.Value}"));
         }
 
         #endregion
