@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
+using Asteroids.Engine.Enums;
+using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.BlazorComponents.Components
 {

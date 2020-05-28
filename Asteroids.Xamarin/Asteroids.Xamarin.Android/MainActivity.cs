@@ -3,7 +3,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
-using Asteroids.Standard.Enums;
+using Asteroids.Engine.Enums;
 
 namespace Asteroids.Xamarin.Droid
 {

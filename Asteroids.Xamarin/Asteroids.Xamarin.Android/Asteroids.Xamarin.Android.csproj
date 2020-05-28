@@ -102,6 +102,10 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Asteroids.Engine\Asteroids.Engine.csproj">
+      <Project>{0549e599-beab-499d-abed-2b1c1a30e624}</Project>
+      <Name>Asteroids.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Asteroids.Standard\Asteroids.Standard.csproj">
       <Project>{10AB7D83-5711-4C7B-A216-94BB8F25660F}</Project>
       <Name>Asteroids.Standard</Name>

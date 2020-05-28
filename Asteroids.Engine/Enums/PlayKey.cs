@@ -1,4 +1,4 @@
-﻿namespace Asteroids.Standard.Enums
+﻿namespace Asteroids.Engine.Enums
 {
     public enum PlayKey {
         Escape,

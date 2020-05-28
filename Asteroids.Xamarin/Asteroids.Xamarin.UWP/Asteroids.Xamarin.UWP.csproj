@@ -147,6 +147,10 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform" Version="6.2.10" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Asteroids.Engine\Asteroids.Engine.csproj">
+      <Project>{0549E599-BEAB-499D-ABED-2B1C1A30E624}</Project>
+      <Name>Asteroids.Engine</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Asteroids.Standard\Asteroids.Standard.csproj">
       <Project>{10AB7D83-5711-4C7B-A216-94BB8F25660F}</Project>
       <Name>Asteroids.Standard</Name>

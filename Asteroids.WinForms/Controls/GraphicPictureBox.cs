@@ -3,8 +3,8 @@ using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Asteroids.Standard.Enums;
-using Asteroids.Standard.Interfaces;
+using Asteroids.Engine.Enums;
+using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.WinForms.Controls
 {

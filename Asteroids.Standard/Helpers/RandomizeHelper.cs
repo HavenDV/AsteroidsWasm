@@ -1,6 +1,6 @@
 ﻿using System;
-using Asteroids.Standard.Colors;
-using Asteroids.Standard.Enums;
+using Asteroids.Engine.Colors;
+using Asteroids.Engine.Enums;
 
 namespace Asteroids.Standard.Helpers
 {

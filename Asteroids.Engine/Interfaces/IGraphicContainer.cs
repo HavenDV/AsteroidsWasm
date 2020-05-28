@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
-using Asteroids.Standard.Enums;
+using Asteroids.Engine.Enums;
 
-namespace Asteroids.Standard.Interfaces
+namespace Asteroids.Engine.Interfaces
 {
     /// <summary>
     /// Main graphic container to draw <see cref="IGraphicLine"/>s and <see cref="IGraphicPolygon"/>s.

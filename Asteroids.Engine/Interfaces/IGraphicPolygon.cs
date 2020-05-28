@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using Asteroids.Standard.Enums;
+using Asteroids.Engine.Enums;
 
-namespace Asteroids.Standard.Interfaces
+namespace Asteroids.Engine.Interfaces
 {
     /// <summary>
     /// Polygon vector to render in the UI.

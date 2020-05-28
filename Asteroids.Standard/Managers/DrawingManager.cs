@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Asteroids.Engine.Enums;
 using Asteroids.Standard.Base;
 using Asteroids.Standard.Components;
-using Asteroids.Standard.Enums;
 using Asteroids.Standard.Helpers;
 using Asteroids.Standard.Screen;
 

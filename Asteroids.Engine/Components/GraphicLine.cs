@@ -1,8 +1,8 @@
 ﻿using System.Drawing;
-using Asteroids.Standard.Enums;
-using Asteroids.Standard.Interfaces;
+using Asteroids.Engine.Enums;
+using Asteroids.Engine.Interfaces;
 
-namespace Asteroids.Standard.Components
+namespace Asteroids.Engine.Components
 {
     public class GraphicLine : IGraphicLine
     {

@@ -1,4 +1,4 @@
-﻿namespace Asteroids.Standard.Enums
+﻿namespace Asteroids.Engine.Enums
 {
     /// <summary>
     /// Named Colors used by the game engine.

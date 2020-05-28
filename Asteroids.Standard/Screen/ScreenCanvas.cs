@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
-using Asteroids.Standard.Components;
-using Asteroids.Standard.Enums;
-using Asteroids.Standard.Interfaces;
+using Asteroids.Engine.Components;
+using Asteroids.Engine.Enums;
+using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.Standard.Screen
 {

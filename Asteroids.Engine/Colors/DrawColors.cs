@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Asteroids.Standard.Enums;
+using Asteroids.Engine.Enums;
 
-namespace Asteroids.Standard.Colors
+namespace Asteroids.Engine.Colors
 {
     /// <summary>
     /// Drawing colors used by the game engine.
     /// </summary>
-    internal static class DrawColors
+    public static class DrawColors
     {
         /// <summary>
         /// Collection of <see cref="DrawColor"/> HEX string values used by the game engine.

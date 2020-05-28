@@ -2,9 +2,9 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using Asteroids.Engine.Enums;
 using Asteroids.Engine.Helpers;
-using Asteroids.Standard.Enums;
-using Asteroids.Standard.Interfaces;
+using Asteroids.Engine.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 

@@ -6,8 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Asteroids.Standard.Enums;
-using Asteroids.Standard.Interfaces;
+using Asteroids.Engine.Enums;
+using Asteroids.Engine.Interfaces;
 
 namespace Asteroids.Wpf.Controls
 {

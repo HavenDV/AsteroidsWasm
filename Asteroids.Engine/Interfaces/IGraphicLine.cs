@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
-using Asteroids.Standard.Enums;
+using Asteroids.Engine.Enums;
 
-namespace Asteroids.Standard.Interfaces
+namespace Asteroids.Engine.Interfaces
 {
     /// <summary>
     /// Line vector to render in the UI.
