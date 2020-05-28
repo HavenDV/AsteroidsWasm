@@ -2,7 +2,7 @@
 
 #nullable enable
 
-namespace Asteroids.Standard.Utilities
+namespace Asteroids.Engine.Utilities
 {
     public class Lock : IDisposable
     {
